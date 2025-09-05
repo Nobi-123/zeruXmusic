@@ -3,13 +3,12 @@ import importlib
 
 from pyrogram import idle
 
-# ✅ Fix for NoActiveGroupCall (now GroupCallNotFoundError in pytgcalls 3.0.0.dev24)
+# ✅ Handle NoActiveGroupCall replacement (since it's removed in v3)
 try:
     from pytgcalls.exceptions import GroupCallNotFoundError as NoActiveGroupCall
 except ImportError:
     class NoActiveGroupCall(Exception):
         pass
-
 
 import config
 from ANNIEMUSIC import LOGGER, app, userbot
@@ -17,7 +16,7 @@ from ANNIEMUSIC.core.call import JARVIS
 from ANNIEMUSIC.misc import sudo
 from ANNIEMUSIC.plugins import ALL_MODULES
 from ANNIEMUSIC.utils.database import get_banned_users, get_gbanned
-from ANNIEMUSIC.utils.cookie_handler import fetch_and_store_cookies 
+from ANNIEMUSIC.utils.cookie_handler import fetch_and_store_cookies
 from config import BANNED_USERS
 
 
@@ -37,7 +36,7 @@ async def init():
         await fetch_and_store_cookies()
         LOGGER("ANNIEMUSIC").info("ʏᴏᴜᴛᴜʙᴇ ᴄᴏᴏᴋɪᴇs ʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ✅")
     except Exception as e:
-        LOGGER("ANNIEMUSIC").warning(f"⚠️ᴄᴏᴏᴋɪᴇ ᴇʀʀᴏʀ: {e}")
+        LOGGER("ANNIEMUSIC").warning(f"⚠️ Cookie error: {e}")
 
     await sudo()
 
@@ -55,29 +54,32 @@ async def init():
     for all_module in ALL_MODULES:
         importlib.import_module("ANNIEMUSIC.plugins" + all_module)
 
-    LOGGER("ANNIEMUSIC.plugins").info("ᴍᴀʀɪɴ's ᴍᴏᴅᴜʟᴇs ʟᴏᴀᴅᴇᴅ...")
+    LOGGER("ANNIEMUSIC.plugins").info("ᴍᴀʀɪɴ's modules loaded...")
 
     await userbot.start()
-    await JARVIS.start()
+    await JARVIS.auto_start()
 
+    # ✅ Fixed: use join_group_call instead of old stream_call
     try:
-        await JARVIS.stream_call("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4")
+        if JARVIS.one:
+            await JARVIS.one.join_group_call(
+                config.LOGGER_ID,  # replace with your log group/channel ID
+                JARVIS.dynamic_media_stream("https://te.legra.ph/file/29f784eb49d230ab62e9e.mp4"),
+            )
     except NoActiveGroupCall:
         LOGGER("ANNIEMUSIC").error(
-            "ᴘʟᴇᴀsᴇ ᴛᴜʀɴ ᴏɴ ᴛʜᴇ ᴠᴏɪᴄᴇ ᴄʜᴀᴛ ᴏғ ʏᴏᴜʀ ʟᴏɢ ɢʀᴏᴜᴘ/ᴄʜᴀɴɴᴇʟ.\n\nᴍᴀʀɪɴ ʙᴏᴛ sᴛᴏᴘᴘᴇᴅ..."
+            "ᴘʟᴇᴀsᴇ turn on the voice chat of your log group/channel.\n\nᴍᴀʀɪɴ ʙᴏᴛ stopped..."
         )
         exit()
-    except:
-        pass
+    except Exception as e:
+        LOGGER("ANNIEMUSIC").warning(f"⚠️ Group call join error: {e}")
 
     await JARVIS.decorators()
-    LOGGER("ANNIEMUSIC").info(
-        "\x41\x6e\x6e\x69\x65\x20\x4d\x75\x73\x69\x63\x20\x52\x6f\x62\x6f\x74\x20\x53\x74\x61\x72\x74\x65\x64\x20\x53\x75\x63\x63\x65\x73\x73\x66\x75\x6c\x6c\x79\x2e\x2e\x2e"
-    )
+    LOGGER("ANNIEMUSIC").info("Annie Music Robot Started Successfully ✅")
     await idle()
     await app.stop()
     await userbot.stop()
-    LOGGER("ANNIEMUSIC").info("sᴛᴏᴘᴘɪɴɢ ᴍᴀʀɪɴ ᴍᴜsɪᴄ ʙᴏᴛ ...")
+    LOGGER("ANNIEMUSIC").info("Stopping Annie Music Bot ...")
 
 
 if __name__ == "__main__":
