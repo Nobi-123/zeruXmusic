@@ -7,7 +7,7 @@ from ntgcalls import TelegramServerError
 from pyrogram import Client
 from pyrogram.errors import FloodWait, ChatAdminRequired
 from pyrogram.types import InlineKeyboardMarkup
-from pytgcalls import PyTgCalls
+from pytgcalls.client import PyTgCalls
 try:
     from pytgcalls.exceptions import GroupCallNotFoundError as NoActiveGroupCall
 except ImportError:
