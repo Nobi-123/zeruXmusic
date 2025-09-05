@@ -7,9 +7,16 @@ from ntgcalls import TelegramServerError
 from pyrogram import Client
 from pyrogram.errors import FloodWait, ChatAdminRequired
 from pyrogram.types import InlineKeyboardMarkup
-from pytgcalls import GroupCallFactory  
-from pytgcalls.exceptions import PyTgCallsError as NoActiveGroupCall
+from pytgcalls import PyTgCalls
 from pytgcalls.types import AudioQuality, ChatUpdate, MediaStream, StreamEnded, Update, VideoQuality
+
+# ---- Exception Handling Fix ---- #
+try:
+    from pytgcalls.exceptions import NoActiveGroupCall
+except ImportError:
+    class NoActiveGroupCall(Exception):
+        """Fallback if NoActiveGroupCall does not exist"""
+        pass
 
 import config
 from strings import get_string
@@ -62,19 +69,19 @@ async def _clear_(chat_id: int) -> None:
 class Call:
     def __init__(self):
         self.userbot1 = Client("AnnieXAssis1", config.API_ID, config.API_HASH, session_string=config.STRING1) if config.STRING1 else None
-        self.one = GroupCallFactory(self.userbot1).get_group_call() if self.userbot1 else None   # ✅ FIXED
+        self.one = PyTgCalls(self.userbot1) if self.userbot1 else None
 
         self.userbot2 = Client("AnnieXAssis2", config.API_ID, config.API_HASH, session_string=config.STRING2) if config.STRING2 else None
-        self.two = GroupCallFactory(self.userbot2).get_group_call() if self.userbot2 else None   # ✅ FIXED
+        self.two = PyTgCalls(self.userbot2) if self.userbot2 else None
 
         self.userbot3 = Client("AnnieXAssis3", config.API_ID, config.API_HASH, session_string=config.STRING3) if config.STRING3 else None
-        self.three = GroupCallFactory(self.userbot3).get_group_call() if self.userbot3 else None   # ✅ FIXED
+        self.three = PyTgCalls(self.userbot3) if self.userbot3 else None
 
         self.userbot4 = Client("AnnieXAssis4", config.API_ID, config.API_HASH, session_string=config.STRING4) if config.STRING4 else None
-        self.four = GroupCallFactory(self.userbot4).get_group_call() if self.userbot4 else None   # ✅ FIXED
+        self.four = PyTgCalls(self.userbot4) if self.userbot4 else None
 
         self.userbot5 = Client("AnnieXAssis5", config.API_ID, config.API_HASH, session_string=config.STRING5) if config.STRING5 else None
-        self.five = GroupCallFactory(self.userbot5).get_group_call() if self.userbot5 else None   # ✅ FIXED
+        self.five = PyTgCalls(self.userbot5) if self.userbot5 else None
 
         self.active_calls: set[int] = set()
 
@@ -86,6 +93,8 @@ class Call:
         for call in [self.one, self.two, self.three, self.four, self.five]:
             if call:
                 await call.start()
+
+    # ... (keep rest of your original methods unchanged) ...
 
 
 JARVIS = Call()
