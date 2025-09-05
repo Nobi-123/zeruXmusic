@@ -2,11 +2,14 @@ import asyncio
 import importlib
 
 from pyrogram import idle
+
+# ✅ Fix for NoActiveGroupCall (now GroupCallNotFoundError in pytgcalls 3.0.0.dev24)
 try:
     from pytgcalls.exceptions import GroupCallNotFoundError as NoActiveGroupCall
 except ImportError:
     class NoActiveGroupCall(Exception):
         pass
+
 
 import config
 from ANNIEMUSIC import LOGGER, app, userbot
@@ -35,7 +38,6 @@ async def init():
         LOGGER("ANNIEMUSIC").info("ʏᴏᴜᴛᴜʙᴇ ᴄᴏᴏᴋɪᴇs ʟᴏᴀᴅᴇᴅ sᴜᴄᴄᴇssғᴜʟʟʏ ✅")
     except Exception as e:
         LOGGER("ANNIEMUSIC").warning(f"⚠️ᴄᴏᴏᴋɪᴇ ᴇʀʀᴏʀ: {e}")
-
 
     await sudo()
 
