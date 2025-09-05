@@ -2,10 +2,13 @@ import asyncio
 import importlib
 
 from pyrogram import idle
+
+# ---- Exception Handling Fix ---- #
 try:
     from pytgcalls.exceptions import NoActiveGroupCall
 except ImportError:
     class NoActiveGroupCall(Exception):
+        """Fallback if NoActiveGroupCall does not exist"""
         pass
 
 import config
@@ -36,7 +39,6 @@ async def init():
     except Exception as e:
         LOGGER("ANNIEMUSIC").warning(f"⚠️ᴄᴏᴏᴋɪᴇ ᴇʀʀᴏʀ: {e}")
 
-
     await sudo()
 
     try:
@@ -65,8 +67,8 @@ async def init():
             "ᴘʟᴇᴀsᴇ ᴛᴜʀɴ ᴏɴ ᴛʜᴇ ᴠᴏɪᴄᴇ ᴄʜᴀᴛ ᴏғ ʏᴏᴜʀ ʟᴏɢ ɢʀᴏᴜᴘ/ᴄʜᴀɴɴᴇʟ.\n\nᴍᴀʀɪɴ ʙᴏᴛ sᴛᴏᴘᴘᴇᴅ..."
         )
         exit()
-    except:
-        pass
+    except Exception as e:
+        LOGGER("ANNIEMUSIC").warning(f"⚠️ Unexpected stream error: {e}")
 
     await JARVIS.decorators()
     LOGGER("ANNIEMUSIC").info(
