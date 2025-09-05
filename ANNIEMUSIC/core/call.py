@@ -8,7 +8,7 @@ from pyrogram import Client
 from pyrogram.errors import FloodWait, ChatAdminRequired
 from pyrogram.types import InlineKeyboardMarkup
 from pytgcalls import GroupCallFactory  
-from pytgcalls.exceptions import NoActiveGroupCall
+from pytgcalls.exceptions import PyTgCallsError as NoActiveGroupCall
 from pytgcalls.types import AudioQuality, ChatUpdate, MediaStream, StreamEnded, Update, VideoQuality
 
 import config
