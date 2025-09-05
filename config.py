@@ -12,11 +12,11 @@ API_HASH = getenv("API_HASH")
 BOT_TOKEN = getenv("BOT_TOKEN")
 
 OWNER_ID = int(getenv("OWNER_ID", 7694170809))
-OWNER_USERNAME = getenv("OWNER_USERNAME", "x9Ahad")
-BOT_USERNAME = getenv("BOT_USERNAME", "PreetixMusic_bot")
+OWNER_USERNAME = getenv("OWNER_USERNAME", "Og_Zerathos")
+BOT_USERNAME = getenv("BOT_USERNAME", "MarinKitagwa_Bot")
 BOT_NAME = getenv("BOT_NAME", "- `𝐂α᱂ᴅɪᴏ ꭗ‌ 𝐌ᴜѕɪᴄ")
-ASSUSERNAME = getenv("ASSUSERNAME", "PreetixAssistant")
-EVALOP = list(map(int, getenv("EVALOP", "6797202080").split()))
+ASSUSERNAME = getenv("ASSUSERNAME", "Og_Zerathos")
+EVALOP = list(map(int, getenv("EVALOP", "7694170809").split()))
 
 # ───── Mongo & Logging ───── #
 MONGO_DB_URI = getenv("MONGO_DB_URI")
@@ -61,7 +61,7 @@ SPOTIFY_CLIENT_ID = getenv("SPOTIFY_CLIENT_ID", "22b6125bfe224587b722d6815002db2
 SPOTIFY_CLIENT_SECRET = getenv("SPOTIFY_CLIENT_SECRET", "c9c63c6fbf2f467c8bc68624851e9773")
 
 # ───── Session Strings ───── #
-STRING1 = getenv("STRING_SESSION"," AgCOaU4AMhs2zXt5ZMPUxy6CCi5UXkrxiw9K6waJak3cY2rNexhzgop077ISfte_6tFc9PS4yAB61_hL8-MEij2j-y4O2liZikwKuFWKNhWIyOPHuV4WV9yEEUbZvTdp5Fi0fTWPNxe7Ks_bJjPPyI4khC9HNWwj6WGxeUbkBOcpVROP9kqV7JXLa9DUdBeKZ_QivQXeIHgdBNJJRCWa36kn5w46Zw85KHjYyc-UxR6KARoF1ErX076O27S_MJE4S7FgpRnJme7gAEATacznecxgUQ4KV-Aa_sX_341fnSXpaV4kpmjAYl6NEplLYmCHBpmq2MDDoAArtfHvu6_tFHuWX1HFXAAAAAHR4jcZAA")
+STRING1 = getenv("STRING_SESSION","BQFvCVYAdeaJ4zQZhRBq7YrRYhx5Ic1VGRkTCY7IfawPDSOh6J2o9yk12FY_CHjd1cXL--D1Nar1GSr82Q-qOlZMG5DLcoSBjbbwL_rIq_W0pEh6TGoc65wVBPB6J2fAMqV_DegNjq6BXmsPnd8V6ut1LpLmDmQHx2ZQyuxmW51Se5qlzFGQUsh9Sp7xjEsqnuTmTHvF__m8N_haIvWQUh4vbyprwBHYZIDpgBlpJUKqkEHLbjs41VeoExRrxULa-3eU2zP5-CXRrAhDRvGTMgZSklqc76PHuw2J2vAVxmjVyOgVt-bpQuV8mgTxjneasDMmm7kDUe8q_QeFDZ0r4b76vGBlggAAAAH6Sq7xAA")
 STRING2 = getenv("STRING_SESSION2")
 STRING3 = getenv("STRING_SESSION3")
 STRING4 = getenv("STRING_SESSION4")
