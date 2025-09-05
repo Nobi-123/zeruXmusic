@@ -8,15 +8,12 @@ from pyrogram import Client
 from pyrogram.errors import FloodWait, ChatAdminRequired
 from pyrogram.types import InlineKeyboardMarkup
 from pytgcalls import PyTgCalls
-from pytgcalls.types import AudioQuality, ChatUpdate, MediaStream, StreamEnded, Update, VideoQuality
-
-# ---- Exception Handling Fix ---- #
 try:
-    from pytgcalls.exceptions import NoActiveGroupCall
+    from pytgcalls.exceptions import GroupCallNotFoundError as NoActiveGroupCall
 except ImportError:
     class NoActiveGroupCall(Exception):
-        """Fallback if NoActiveGroupCall does not exist"""
         pass
+from pytgcalls.types import AudioQuality, ChatUpdate, MediaStream, StreamEnded, Update, VideoQuality
 
 import config
 from strings import get_string
@@ -94,7 +91,6 @@ class Call:
             if call:
                 await call.start()
 
-    # ... (keep rest of your original methods unchanged) ...
-
+    # ... (all other methods remain the same)
 
 JARVIS = Call()
