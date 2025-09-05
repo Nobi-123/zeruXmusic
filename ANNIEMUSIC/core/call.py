@@ -3,16 +3,17 @@ import os
 from datetime import datetime, timedelta
 from typing import Union
 
-from ntgcalls import TelegramServerError
 from pyrogram import Client
 from pyrogram.errors import FloodWait, ChatAdminRequired
 from pyrogram.types import InlineKeyboardMarkup
-from pytgcalls import GroupCallFactory
-from pytgcalls.types import AudioQuality, VideoQuality, MediaStream, ChatUpdate, StreamEnded, Update
+
+from pytgcalls import PyTgCalls, StreamType
+from pytgcalls.exceptions import GroupCallNotFoundError
+from pytgcalls.types.input_stream import AudioPiped, VideoPiped
 
 import config
 from strings import get_string
-from ANNIEMUSIC import LOGGER, YouTube, app, userbot
+from ANNIEMUSIC import LOGGER, YouTube, app
 from ANNIEMUSIC.misc import db
 from ANNIEMUSIC.utils.database import (
     add_active_chat,
@@ -36,20 +37,13 @@ from ANNIEMUSIC.utils.errors import capture_internal_err, send_large_error
 autoend = {}
 counter = {}
 
-# ✅ Patch for Pyrogram v2 (invoke -> send)
-if not hasattr(userbot, "invoke") and hasattr(userbot, "send"):
-    userbot.invoke = userbot.send
 
-
-def dynamic_media_stream(path: str, video: bool = False, ffmpeg_params: str = None) -> MediaStream:
-    return MediaStream(
-        audio_path=path,
-        media_path=path,
-        audio_parameters=AudioQuality.MEDIUM if video else AudioQuality.STUDIO,
-        video_parameters=VideoQuality.HD_720p if video else VideoQuality.SD_360p,
-        video_flags=(MediaStream.Flags.AUTO_DETECT if video else MediaStream.Flags.IGNORE),
-        ffmpeg_parameters=ffmpeg_params,
-    )
+# ✅ Replaced old MediaStream system with new AudioPiped / VideoPiped
+def dynamic_media_stream(path: str, video: bool = False, ffmpeg_params: str = None):
+    if video:
+        return VideoPiped(path, stream_type=StreamType().local_stream)
+    else:
+        return AudioPiped(path, stream_type=StreamType().local_stream)
 
 
 async def _clear_(chat_id: int) -> None:
@@ -64,18 +58,33 @@ async def _clear_(chat_id: int) -> None:
 
 class Call:
     def __init__(self):
-        # ✅ Use GroupCallFactory with patched userbot
-        self.one = GroupCallFactory(userbot).get_group_call()
+        self.userbot1 = Client("AnnieXAssis1", config.API_ID, config.API_HASH, session_string=config.STRING1) if config.STRING1 else None
+        self.one = PyTgCalls(self.userbot1) if self.userbot1 else None
+
+        self.userbot2 = Client("AnnieXAssis2", config.API_ID, config.API_HASH, session_string=config.STRING2) if config.STRING2 else None
+        self.two = PyTgCalls(self.userbot2) if self.userbot2 else None
+
+        self.userbot3 = Client("AnnieXAssis3", config.API_ID, config.API_HASH, session_string=config.STRING3) if config.STRING3 else None
+        self.three = PyTgCalls(self.userbot3) if self.userbot3 else None
+
+        self.userbot4 = Client("AnnieXAssis4", config.API_ID, config.API_HASH, session_string=config.STRING4) if config.STRING4 else None
+        self.four = PyTgCalls(self.userbot4) if self.userbot4 else None
+
+        self.userbot5 = Client("AnnieXAssis5", config.API_ID, config.API_HASH, session_string=config.STRING5) if config.STRING5 else None
+        self.five = PyTgCalls(self.userbot5) if self.userbot5 else None
+
         self.active_calls: set[int] = set()
 
     async def auto_start(self):
         LOGGER(__name__).info("Auto-starting all Pyrogram Clients...")
-        if not userbot.is_connected:
-            await userbot.start()
-        if self.one:
-            await self.one.start()
+        for client in [self.userbot1, self.userbot2, self.userbot3, self.userbot4, self.userbot5]:
+            if client and not client.is_connected:
+                await client.start()
+        for call in [self.one, self.two, self.three, self.four, self.five]:
+            if call:
+                await call.start()
 
-    # ... (all your other methods remain unchanged)
+    # other methods remain unchanged (play, stop, resume, etc.)
 
 
 JARVIS = Call()
